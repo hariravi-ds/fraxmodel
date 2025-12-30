@@ -86,7 +86,6 @@ CSV_COLUMNS = [
 
 
 # ------------------- Browser helpers -------------------
-
 def make_driver(headless: bool = True) -> webdriver.Chrome:
     opts = Options()
     if headless:
@@ -151,7 +150,6 @@ def try_accept_cookies(driver):
 
 
 # ------------------- React-select (ID-independent) -------------------
-
 def get_react_combobox_inputs(driver) -> List:
     return driver.find_elements(
         By.CSS_SELECTOR,
@@ -197,7 +195,6 @@ def react_select_pick_by_index(driver, index: int, option_text: str, wait_s: flo
 
 
 # ------------------- Checkbox robust click -------------------
-
 def set_checkbox(driver, locator, checked: bool, wait_s: float):
     el = WebDriverWait(driver, wait_s).until(
         EC.presence_of_element_located(locator))
@@ -246,7 +243,6 @@ def set_checkbox(driver, locator, checked: bool, wait_s: float):
 
 
 # ------------------- Results parsing -------------------
-
 def _normalize_minuses(txt: str) -> str:
     return (txt
             .replace("\u2212", "-")
@@ -304,7 +300,6 @@ def wait_for_new_results(driver, prev_sig: Optional[Tuple[float, float, float]],
 
 
 # ------------------- Patient sampling -------------------
-
 @dataclass
 class Patient:
     age: int
@@ -350,7 +345,6 @@ def sample_patient(rng: np.random.Generator) -> Patient:
 
 
 # ------------------- One-time setup + per-row calc -------------------
-
 def open_and_setup(driver, scanner: str, wait_s: float):
     driver.get(FRAXPLUS_URL)
     try_accept_cookies(driver)
@@ -407,7 +401,7 @@ def fraxplus_fill_and_calc(driver, us_group: str, patient: Patient,
     res = wait_for_new_results(
         driver, prev_sig=prev_sig, timeout_s=result_timeout_s)
 
-    # REQUIRED: if res is None -> all 3 null
+    # if res is None -> all 3 null
     if res is None:
         if debug:
             save_debug_artifacts(driver, prefix="fraxplus_debug_no_results")
@@ -457,8 +451,7 @@ def append_row_csv(out_csv: str, row: Dict):
     df1.to_csv(out_csv, mode="a", header=False, index=False)
 
 
-# ------------------- Dataset collection (streaming to CSV) -------------------
-
+# ------------------- Dataset collection -------------------
 def collect_dataset_to_csv(n_per_group: int, seed: int, out_csv: str,
                            headless: bool, debug: bool,
                            scanner: str, wait_s: float, result_timeout_s: float,
@@ -527,7 +520,6 @@ def collect_dataset_to_csv(n_per_group: int, seed: int, out_csv: str,
 
 
 # -------------------  ML (kept, not run unless --train 1) -------------------
-
 def train_models(df: pd.DataFrame, out_prefix: str):
     X = df.drop(columns=["mof_risk", "hip_risk"])
     X = pd.get_dummies(X, columns=["us_group"], drop_first=False)
@@ -574,12 +566,11 @@ def train_models(df: pd.DataFrame, out_prefix: str):
 
 
 # ------------------- Main -------------------
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--n_per_group", type=int, default=1)
     ap.add_argument("--seed", type=int, default=42)
-    ap.add_argument("--out_csv", type=str, default="fraxplus_us2_dataset.csv")
+    ap.add_argument("--out_csv", type=str, default="fraxplus_us1_dataset.csv")
     ap.add_argument("--headless", type=int, default=1)
     ap.add_argument("--debug", type=int, default=0)
     ap.add_argument("--scanner", type=str, default=DEFAULT_SCANNER)
@@ -587,7 +578,7 @@ def main():
     ap.add_argument("--wait_s", type=float, default=10.0)
     ap.add_argument("--result_timeout_s", type=float, default=30.0)
 
-    # if you want an xlsx at the end (optional)
+    # if xlsx at the end
     ap.add_argument("--out_xlsx_end", type=int, default=0)
 
     # ML kept but NOT run unless --train 1
@@ -608,7 +599,7 @@ def main():
         also_write_xlsx_end=(args.out_xlsx_end == 1),
     )
 
-    # ML is not run by default; if you do run it, it reads the CSV you wrote.
+    # ML is not run by default
     if args.train == 1:
         df = pd.read_csv(args.out_csv)
         if len(df) < 40:
