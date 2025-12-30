@@ -1,0 +1,5 @@
+continent,bmi_units,scanner,us_group,age,sex_female,weight_kg,height_cm,bmi,bmd,previousFracture,parentFracturedHip,smoking,glucocorticoids,rheumatoidArthritis,secondaryOsteoporosis,alcohol,t_score
+North America,kg / cm,Hologic,US (Caucasian),44,1,86,168.6,30.25,0.527,0,0,0,0,0,0,0,-2.76
+North America,kg / cm,Hologic,US (Caucasian),79,0,95.6,184.5,28.08,0.608,0,1,0,0,0,0,0,-2.08
+North America,kg / cm,Hologic,US (Caucasian),62,0,85.3,173.4,28.37,0.83,1,0,0,0,0,0,0,-0.23
+North America,kg / cm,Hologic,US (Caucasian),85,1,58.4,162.1,22.23,0.595,0,0,0,0,0,0,0,-2.19

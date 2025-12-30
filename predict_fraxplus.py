@@ -42,3 +42,8 @@ def predict_fraxplus(input_df, model_path="fraxplus_models.pkl", clamp_0_100=Tru
         "mof_risk_pred": mof_pred,
         "hip_risk_pred": hip_pred
     })
+
+
+input = pd.read_csv("sampleInput.csv")
+out = predict_fraxplus(input)
+print(out)
