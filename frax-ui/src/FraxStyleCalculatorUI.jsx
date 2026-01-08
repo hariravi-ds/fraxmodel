@@ -151,7 +151,7 @@ export default function FraxStyleCalculatorUI() {
           : null,
       };
 
-      const resp = await fetch("/api/frax/calculate", {
+      const resp = await fetch("http://127.0.0.1:5000/api/frax/calculate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -386,10 +386,16 @@ export default function FraxStyleCalculatorUI() {
                 Clear
               </button>
             </div>
+            {result && (
+              <div>
+                <p>Major Osteoporotic Fracture Risk: {result.mof.toFixed(2)}%</p>
+                <p>Hip Fracture Risk: {result.hip.toFixed(2)}%</p>
+              </div>
+            )}
           </form>
 
           {/* Right: BMD + actions */}
-          <div className="md:col-span-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          {/* <div className="md:col-span-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="mb-4 flex items-center justify-between">
               <div className="text-sm font-semibold text-slate-800">
                 <span className="mr-2 font-semibold text-slate-600">12.</span>
@@ -443,8 +449,6 @@ export default function FraxStyleCalculatorUI() {
                 Clear
               </button>
             </div>
-
-            {/* Result panel */}
             <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
               {!calculated ? (
                 <div className="text-sm text-slate-600"></div>
@@ -482,7 +486,7 @@ export default function FraxStyleCalculatorUI() {
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
